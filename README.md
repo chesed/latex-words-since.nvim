@@ -49,7 +49,7 @@ opts = {
 The plugin exposes a single user command. Execute it while working inside any tracked Git repository containing a LaTeX document:
 
 ```vim
-:GitWordsCount
+:LatexWordsSince
 ```
 
 ### Output Format
