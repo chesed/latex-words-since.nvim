@@ -38,6 +38,18 @@ function M.calculate_project_words()
 	local current_raw = vf.system("cd " .. vf.shellescape(repo_root) .. " && " .. current_cmd)
 	local current_total = tonumber(string.match(current_raw or "0", "(%d+)")) or 0
 
+	-- --- NEW: Log wordcount and timestamp to .cls file ---
+	local log_file_path = repo_root .. "/wordcount.cls"
+	local log_file = io.open(log_file_path, "a")
+	if log_file then
+		local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+		log_file:write(string.format("[%s] Total Word Count: %d\n", timestamp, current_total))
+		log_file:close()
+	else
+		print("GitWords: Could not write to " .. log_file_path)
+	end
+	-- -----------------------------------------------------
+
 	-- 4. PAST: Safely extract a pure commit copy to a temporary sandbox
 	local tmp_dir = vf.trim(vf.system("mktemp -d 2>/dev/null"))
 	if tmp_dir == "" or vim.v.shell_error ~= 0 then
